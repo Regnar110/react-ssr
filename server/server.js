@@ -8,7 +8,7 @@ import App from '../src/App'
 const app = express()
 const PORT = process.env.PORT || 3001
 
-app.use('^/$', (req, res) => { //symbol ^ - początek linii $- koniec linii
+app.get('/', (req, res) => { //symbol ^ - początek linii $- koniec linii - JEŻELI ZAMIAST GET UZYJEMY MIDDLEWARE ZE ŚCIEŻKĄ '^/$' TO NASZ KOMPONENT BĘDZIE WYŚWIETLANY NA KAŻDEJ STRONIE NAWET JAK WPISZEMY /HOME
     fs.readFile(path.resolve('./build/index.html'), 'utf-8', (err, data) => {
         if(err) {
             console.log('something went wrong ', err)
