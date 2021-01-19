@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import './App.css';
+import withStyles from 'isomorphic-style-loader/withStyles'
+import appStyles from './App.css';
 
-const App = () => {
+const App = (context) => {
 
   const [count, setCount] = useState(0);
 
@@ -14,7 +15,7 @@ const App = () => {
   }
 
   return (
-    <div className="App">
+    <div className={appStyles.App}>
       <p>{count}</p>
       <button onClick={handleIncrament}>Incrament</button>
       <button onClick={handleDecrament}>Decrament</button>
@@ -22,4 +23,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default withStyles(appStyles)(App);
