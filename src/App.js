@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import withStyles from 'isomorphic-style-loader/withStyles'
-import appStyles from './App.css';
+import './App.css';
+import p1 from './images/p1.jpg'
 
 const App = (context) => {
 
@@ -15,12 +15,13 @@ const App = (context) => {
   }
 
   return (
-    <div className={appStyles.App}>
+    <div className="App">
       <p>{count}</p>
       <button onClick={handleIncrament}>Incrament</button>
       <button onClick={handleDecrament}>Decrament</button>
+      <img src={p1} />
     </div>
   );
 }
 
-export default withStyles(appStyles)(App);
+export default App;

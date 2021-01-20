@@ -4,50 +4,28 @@ import fs from 'fs'
 import React from 'react';
 import ReactDOMServer from 'react-dom/server'
 import App from '../src/App'
-import StyleContext from 'isomorphic-style-loader/StyleContext'
 
 const app = express()
 const PORT = process.env.PORT || 3001
 
 app.get('/', (req, res) => { //symbol ^ - początek linii $- koniec linii - JEŻELI ZAMIAST GET UZYJEMY MIDDLEWARE ZE ŚCIEŻKĄ '^/$' TO NASZ KOMPONENT BĘDZIE WYŚWIETLANY NA KAŻDEJ STRONIE NAWET JAK WPISZEMY /HOME
-    const css = new Set(path.resolve(__dirname, '..', 'build/static/css'));
-    const insertCss = (...styles) => styles.forEach(style => css.add(style._getCss()))
-    const body = ReactDOMServer.renderToString(
-        <StyleContext.Provider value={{ insertCss }}>
-          <App />
-        </StyleContext.Provider>
-      )
-
-      const html = `<!doctype html>
-      <html>
-        <head>
-          <script src="client.js" defer></script>
-          <style>${[...css].join('')}</style>
-        </head>
-        <body>
-          <div id="root">${body}</div>
-        </body>
-      </html>`
-
+    
     fs.readFile(path.resolve('./build/index.html'), 'utf-8', (err, data) => {
         if(err) {
             console.log('something went wrong ', err)
             return res.status(500).send('better luck next time')
         }
 
-        return res.status(200).send(html)
-
-        // return res.send(
-        //     data.replace(
-        //         '<div id="root"></div>', //zamieniamy to
-        //         `<div id="root">${ReactDOMServer.renderToString(<App />)}</div>` // na to
-        //     )
-        // )
+        return res.send(
+            data.replace(
+                '<div id="root"></div>', //zamieniamy to
+                `<div id="root">${ReactDOMServer.renderToString(<App />)}</div>` // na to
+            )
+        )
     })
 }) 
 
 app.use(express.static(path.resolve(__dirname, '..', 'build'))) // pozwala na serwowanie wszystkich plików statycznych z folderu build. Express.static() przyjmuje parametry dirname który wskazuje na ten folder w któym jest server.js kolejny oznacza że jedno directory wstecz i trzeci oznacza że z tego directory po '..' przechodzimy do build
-
 app.listen(PORT, () => {
     console.log(`App running on ${PORT}`)
 })
